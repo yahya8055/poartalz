@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                    <p class="card-text text-muted text-truncate">{{ product.description }}</p>
+                    <p class="card-text fw-bold">${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container mt-4">
+    {% if query %}
+    <h2>Search Results for "{{ query }}"</h2>
+    {% else %}
+    <h2>All Products</h2>
+    {% endif %}
+    
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                    <p class="card-text text-muted text-truncate">{{ product.description }}</p>
+                    <p class="card-text fw-bold">${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted">No products found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

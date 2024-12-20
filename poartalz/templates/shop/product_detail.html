@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Product Carousel -->
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.name }}">
+                    </div>
+                    {% for image in images %}
+                    <div class="carousel-item">
+                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Extra Image">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.description }}</p>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success">Add to Cart</a>
+            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-primary">Add to Wishlist</a>
+        </div>
+    </div>
+<!-- Reviews Section -->
+<div class="mt-5">
+    <h2 class="mb-4">Customer Reviews</h2>
+    {% if reviews %}
+    <ul class="list-group">
+        {% for review in reviews %}
+        <li class="list-group-item">
+            <div class="d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                    <strong>{{ review.user.username }}</strong>
+                    <span class="ms-2 text-warning">
+                        {% for i in "12345" %}
+                            <i class="bi bi-star{% if forloop.counter > review.rating %}-fill{% endif %}"></i>
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="mb-1">{{ review.text_review }}</p>
+                {% if review.image_review %}
+                <img src="{{ review.image_review.url }}" class="img-fluid mt-2 rounded" style="max-height: 150px;">
+                {% endif %}
+                {% if review.video_review %}
+                <video controls class="mt-2 w-100 rounded" style="max-height: 150px;">
+                    <source src="{{ review.video_review.url }}" type="video/mp4">
+                </video>
+                {% endif %}
+                <small class="text-muted">Posted on {{ review.created_at }}</small>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+    {% endif %}
+</div>
+
+
+<!-- Submit Review Form -->
+<div class="mt-5">
+    <h2 class="mb-4">Submit Your Review</h2>
+    {% if user.is_authenticated %}
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <!-- Star Rating -->
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating:</label>
+            <div id="rating" class="d-flex">
+                {% for i in "54321" %}
+                <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" class="btn-check" required>
+                <label class="btn btn-outline-warning star-label" for="star{{ i }}">
+                    <i class="bi bi-star-fill"></i>
+                </label>
+                {% endfor %}
+            </div>
+            <div class="invalid-feedback">Please provide a rating.</div>
+        </div>
+        
+        <!-- Text Review -->
+        <div class="mb-3">
+            <label for="text_review" class="form-label">Your Review:</label>
+            {{ review_form.text_review }}
+            <div class="invalid-feedback">Please provide a text review.</div>
+        </div>
+        <!-- Image Review -->
+        <div class="mb-3">
+            <label for="image_review" class="form-label">Upload an Image (Optional):</label>
+            {{ review_form.image_review }}
+            <div class="invalid-feedback">Please upload a valid image.</div>
+        </div>
+        <!-- Video Review -->
+        <div class="mb-3">
+            <label for="video_review" class="form-label">Upload a Video (Optional):</label>
+            {{ review_form.video_review }}
+            <div class="invalid-feedback">Please upload a valid video file.</div>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+    {% else %}
+    <p class="text-muted">You must be <a href="{% url 'login' %}">logged in</a> to submit a review.</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

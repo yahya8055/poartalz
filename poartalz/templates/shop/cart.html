@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+    <ul class="list-group">
+        {% for item in cart_items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5>{{ item.product.name }}</h5>
+                <p>Quantity: <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control d-inline-block w-auto" onchange="updateCart({{ item.id }}, this.value)"></p>
+                <p>Price: ${{ item.total_price }}</p>
+            </div>
+            <div>
+                <form method="post" action="{% url 'remove_from_cart' item.id %}" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'checkout' %}" class="btn btn-success mt-3">Proceed to Checkout</a>
+</div>
+
+<script>
+    function updateCart(itemId, quantity) {
+        fetch(`{% url 'update_cart' 0 %}`.replace('0', itemId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ 'quantity': quantity })
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+</script>
+{% endblock %}

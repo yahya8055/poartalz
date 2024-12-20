@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header nav a {
+    color: #fff;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+.carousel-inner img {
+    height: 400px; /* Adjust the height as needed */
+    object-fit: cover;
+}
+
+.container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Custom CSS for Reviews Section */
+.list-group-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 15px;
+}
+
+.list-group-item img,
+.list-group-item video {
+    max-height: 150px;
+    object-fit: cover;
+}
+
+.needs-validation .form-control:invalid {
+    border-color: #dc3545;
+}
+
+.needs-validation .form-control:valid {
+    border-color: #28a745;
+}
+
+/* Custom styles for star rating */
+.btn-check + .btn-outline-warning {
+    color: #ccc;
+    font-size: 1.5rem;
+}
+
+.btn-check:checked + .btn-outline-warning {
+    color: #ffc107;
+}
+.card {
+    border-radius: 10px;
+}
+
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Custom CSS for Star Rating */
+.star-label {
+    font-size: 1.5rem;
+    color: #ffc107;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-label:hover,
+.star-label:hover ~ .star-label,
+.star-label:focus,
+.star-label:focus ~ .star-label {
+    color: #ffca2c;
+}
+
+.btn-check:checked + .star-label {
+    color: #ffca2c;
+}
